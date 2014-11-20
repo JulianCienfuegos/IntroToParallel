@@ -1,0 +1,146 @@
+ 
+--------------------------------------------------------------
+Compiling Programming Assignment 2
+--------------------------------------------------------------
+ 
+ 
+GCC: Run a
+ 
+Iter = 0 Resid Norm = 905946.143408
+Iter = 10 Resid Norm = 96894.410256
+Iter = 20 Resid Norm = 10380.708983
+Iter = 30 Resid Norm = 1112.668792
+Iter = 40 Resid Norm = 119.293944
+Iter = 50 Resid Norm = 12.792188
+Iter = 60 Resid Norm = 1.371906
+Iter = 70 Resid Norm = 0.147145
+Iter = 80 Resid Norm = 0.015783
+Iter = 90 Resid Norm = 0.001693
+Iter = 100 Resid Norm = 0.000182
+Iter = 110 Resid Norm = 0.000019
+Iter = 120 Resid Norm = 0.000002
+Solution converged in 124 iterations
+Final residual norm = 0.000001
+Solution at center and four corners of interior N/2 by N/2 grid : 
+xnew[256][256]=512.000000
+xnew[256][769]=1025.000000
+xnew[512][512]=1024.000000
+xnew[769][256]=1025.000000
+xnew[769][769]=1538.000000
+Sequential Jacobi: Matrix Size = 1024; 0.2 GFLOPS; Time = 9.414 sec; 
+ 
+GCC: Run b
+ 
+Iter = 0 Resid Norm = 905946.143408
+Iter = 10 Resid Norm = 96894.410256
+Iter = 20 Resid Norm = 10380.708983
+Iter = 30 Resid Norm = 1112.668792
+Iter = 40 Resid Norm = 119.293944
+Iter = 50 Resid Norm = 12.792188
+Iter = 60 Resid Norm = 1.371906
+Iter = 70 Resid Norm = 0.147145
+Iter = 80 Resid Norm = 0.015783
+Iter = 90 Resid Norm = 0.001693
+Iter = 100 Resid Norm = 0.000182
+Iter = 110 Resid Norm = 0.000019
+Iter = 120 Resid Norm = 0.000002
+Solution converged in 124 iterations
+Final residual norm = 0.000001
+Solution at center and four corners of interior N/2 by N/2 grid : 
+xnew[256][256]=512.000000
+xnew[256][769]=1025.000000
+xnew[512][512]=1024.000000
+xnew[769][256]=1025.000000
+xnew[769][769]=1538.000000
+Sequential Jacobi: Matrix Size = 1024; 0.1 GFLOPS; Time = 14.920 sec; 
+ 
+GCC: Run c
+ 
+Iter = 0 Resid Norm = 12277426.934435
+Iter = 10 Resid Norm = 1314641.172881
+Iter = 20 Resid Norm = 140935.129160
+Iter = 30 Resid Norm = 15113.972965
+Iter = 40 Resid Norm = 1621.128747
+Iter = 50 Resid Norm = 173.903416
+Iter = 60 Resid Norm = 18.656744
+Iter = 70 Resid Norm = 2.005477
+Iter = 80 Resid Norm = 0.214769
+Iter = 90 Resid Norm = 0.023045
+Iter = 100 Resid Norm = 0.002473
+Iter = 110 Resid Norm = 0.000265
+Iter = 120 Resid Norm = 0.000028
+Iter = 130 Resid Norm = 0.000003
+Solution converged in 135 iterations
+Final residual norm = 0.000001
+Solution at center and four corners of interior N/2 by N/2 grid : 
+xnew[256][256]=512.000000
+xnew[256][769]=1025.000000
+xnew[512][512]=1024.000000
+xnew[769][256]=1025.000000
+xnew[769][769]=1538.000000
+Sequential Jacobi: Matrix Size = 1024; 2.5 GFLOPS; Time = 0.730 sec; 
+ 
+GCC: Run d
+ 
+Iter = 0 Resid Norm = 2260838.587495
+Iter = 10 Resid Norm = 242038.951349
+Iter = 20 Resid Norm = 25944.948887
+Iter = 30 Resid Norm = 2782.141135
+Iter = 40 Resid Norm = 298.447683
+Iter = 50 Resid Norm = 32.008025
+Iter = 60 Resid Norm = 3.439798
+Iter = 70 Resid Norm = 0.368388
+Iter = 80 Resid Norm = 0.039525
+Iter = 90 Resid Norm = 0.004242
+Iter = 100 Resid Norm = 0.000455
+Iter = 110 Resid Norm = 0.000049
+Iter = 120 Resid Norm = 0.000005
+Solution converged in 128 iterations
+Final residual norm = 0.000001
+Solution at center and four corners of interior N/2 by N/2 grid : 
+xnew[256][256]=512.000000
+xnew[256][769]=1025.000000
+xnew[512][512]=1024.000000
+xnew[769][256]=1025.000000
+xnew[769][769]=1538.000000
+Sequential Jacobi: Matrix Size = 1024; 1.1 GFLOPS; Time = 1.652 sec; 
+ 
+GCC: Run e
+ 
+Iter = 0 Resid Norm = 1353816.547936
+Iter = 10 Resid Norm = 144900.772545
+Iter = 20 Resid Norm = 15530.254727
+Iter = 30 Resid Norm = 1665.168657
+Iter = 40 Resid Norm = 178.579059
+Iter = 50 Resid Norm = 19.154161
+Iter = 60 Resid Norm = 2.054656
+Iter = 70 Resid Norm = 0.220418
+Iter = 80 Resid Norm = 0.023647
+Iter = 90 Resid Norm = 0.002537
+Iter = 100 Resid Norm = 0.000272
+Iter = 110 Resid Norm = 0.000029
+Iter = 120 Resid Norm = 0.000003
+Solution converged in 126 iterations
+Final residual norm = 0.000001
+Solution at center and four corners of interior N/2 by N/2 grid : 
+xnew[256][256]=512.000000
+xnew[256][769]=1025.000000
+xnew[512][512]=1024.000000
+xnew[769][256]=1025.000000
+xnew[769][769]=1538.000000
+Sequential Jacobi: Matrix Size = 1024; 1.7 GFLOPS; Time = 1.005 sec; 
+
+-----------------------
+Resources requested:
+mem=48gb
+nodes=1:ppn=12
+-----------------------
+Resources used:
+cput=00:01:06
+walltime=00:00:36
+mem=0.034 GB
+vmem=0.153 GB
+-----------------------
+Resource units charged (estimate):
+0.012 RUs
+-----------------------

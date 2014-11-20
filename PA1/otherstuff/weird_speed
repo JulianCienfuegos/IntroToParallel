@@ -1,0 +1,14 @@
+melvyn@melvyn-Satellite-C655:~/Documents/IntroToParallel/PA1$ icc -fast pa3.c
+melvyn@melvyn-Satellite-C655:~/Documents/IntroToParallel/PA1$ ./a.out
+Problem 3 Reference Version: Tensor Size = 128; 1.57 GFLOPS; Time = 0.342 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 0.05 GFLOPS; Time = 11.860 sec; 
+No differences found between base and test versions
+melvyn@melvyn-Satellite-C655:~/Documents/IntroToParallel/PA1$ ./a.out
+Problem 3 Reference Version: Tensor Size = 128; 1.57 GFLOPS; Time = 0.341 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 0.05 GFLOPS; Time = 11.881 sec; 
+No differences found between base and test versions
+melvyn@melvyn-Satellite-C655:~/Documents/IntroToParallel/PA1$ gcc -O3 pa3.c
+melvyn@melvyn-Satellite-C655:~/Documents/IntroToParallel/PA1$ ./a.out
+Problem 3 Reference Version: Tensor Size = 128; 0.04 GFLOPS; Time = 13.074 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.05 GFLOPS; Time = 0.509 sec; 
+No differences found between base and test versions

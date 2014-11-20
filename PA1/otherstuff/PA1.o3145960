@@ -1,0 +1,72 @@
+ 
+--------------------------------------------------------------
+Compiling Problem 2
+--------------------------------------------------------------
+ 
+ipo: remark #11001: performing single-file optimizations
+ipo: remark #11006: generating object file /tmp/pbstmp.3145960/ipo_icc2b3M0H.o
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64/libpthread.a(libpthread.o): In function `sem_open':
+(.text+0x774d): warning: the use of `mktemp' is dangerous, better use `mkstemp'
+ 
+ICC: Run 1
+ 
+blocksize = 64
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.639 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.86 GFLOPS; Time = 0.233 sec; 
+No differences found between base and test versions
+2794838 Diffs found over threshold 0.000000; Max Diff = 0.500000
+ 
+GCC: Run 1
+ 
+blocksize = 64
+Problem 1 Reference Version: Matrix Size = 4096; 0.13 GFLOPS; Time = 1.591 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.36 GFLOPS; Time = 0.561 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+ICC: Run 2
+ 
+blocksize = 64
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.646 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.87 GFLOPS; Time = 0.233 sec; 
+No differences found between base and test versions
+2794838 Diffs found over threshold 0.000000; Max Diff = 0.500000
+ 
+GCC: Run 2
+ 
+blocksize = 64
+Problem 1 Reference Version: Matrix Size = 4096; 0.13 GFLOPS; Time = 1.598 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.36 GFLOPS; Time = 0.561 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+ICC: Run 3
+ 
+blocksize = 64
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.641 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.87 GFLOPS; Time = 0.232 sec; 
+No differences found between base and test versions
+2794838 Diffs found over threshold 0.000000; Max Diff = 0.500000
+ 
+GCC: Run 3
+ 
+blocksize = 64
+Problem 1 Reference Version: Matrix Size = 4096; 0.13 GFLOPS; Time = 1.592 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.36 GFLOPS; Time = 0.561 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+
+-----------------------
+Resources requested:
+mem=48gb
+nodes=1:ppn=12
+-----------------------
+Resources used:
+cput=00:00:13
+walltime=00:00:23
+mem=0.262 GB
+vmem=0.629 GB
+-----------------------
+Resource units charged (estimate):
+0.007 RUs
+-----------------------

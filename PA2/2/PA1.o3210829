@@ -1,0 +1,48 @@
+cp: omitting directory `/nfs/13/osu8844/PA2/2'
+cp: omitting directory `/nfs/13/osu8844/PA2/4'
+cp: omitting directory `/nfs/13/osu8844/PA2/8'
+ 
+--------------------------------------------------------------
+Compiling Programming Assignment 2
+--------------------------------------------------------------
+ 
+gcc: pa2_pt_a.c: No such file or directory
+gcc: pa2_pt_b.c: No such file or directory
+gcc: pa2_pt_c.c: No such file or directory
+gcc: pa2_pt_d.c: No such file or directory
+gcc: pa2_pt_e.c: No such file or directory
+ 
+GCC: Run a
+ 
+/var/spool/batch/torque/mom_priv/jobs/3210829.oak-batch.osc.edu.SC[30]: ./pa2_a: not found [No such file or directory]
+ 
+GCC: Run b
+ 
+/var/spool/batch/torque/mom_priv/jobs/3210829.oak-batch.osc.edu.SC[32]: ./pa2_b: not found [No such file or directory]
+ 
+GCC: Run c
+ 
+/var/spool/batch/torque/mom_priv/jobs/3210829.oak-batch.osc.edu.SC[34]: ./pa2_c: not found [No such file or directory]
+ 
+GCC: Run d
+ 
+/var/spool/batch/torque/mom_priv/jobs/3210829.oak-batch.osc.edu.SC[36]: ./pa2_d: not found [No such file or directory]
+ 
+GCC: Run e
+ 
+/var/spool/batch/torque/mom_priv/jobs/3210829.oak-batch.osc.edu.SC[38]: ./pa2_e: not found [No such file or directory]
+
+-----------------------
+Resources requested:
+mem=48gb
+nodes=1:ppn=12
+-----------------------
+Resources used:
+cput=00:00:00
+walltime=00:00:03
+mem=0.000 GB
+vmem=0.000 GB
+-----------------------
+Resource units charged (estimate):
+0.001 RUs
+-----------------------

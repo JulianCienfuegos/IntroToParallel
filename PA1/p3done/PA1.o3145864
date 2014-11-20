@@ -1,0 +1,66 @@
+ 
+--------------------------------------------------------------
+Compiling Problem 3
+--------------------------------------------------------------
+ 
+ipo: remark #11001: performing single-file optimizations
+ipo: remark #11006: generating object file /tmp/pbstmp.3145864/ipo_iccxHwOQS.o
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64/libpthread.a(libpthread.o): In function `sem_open':
+(.text+0x774d): warning: the use of `mktemp' is dangerous, better use `mkstemp'
+ 
+ICC: Run 1
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 1.11 GFLOPS; Time = 0.485 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.49 GFLOPS; Time = 0.215 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 1
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 0.27 GFLOPS; Time = 1.999 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.20 GFLOPS; Time = 0.447 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 2
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 1.15 GFLOPS; Time = 0.466 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.49 GFLOPS; Time = 0.215 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 2
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 0.27 GFLOPS; Time = 2.018 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.20 GFLOPS; Time = 0.448 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 3
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 1.11 GFLOPS; Time = 0.482 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.49 GFLOPS; Time = 0.215 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 3
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 0.26 GFLOPS; Time = 2.100 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.20 GFLOPS; Time = 0.447 sec; 
+No differences found between base and test versions
+
+-----------------------
+Resources requested:
+mem=48gb
+nodes=1:ppn=12
+-----------------------
+Resources used:
+cput=00:00:10
+walltime=00:00:18
+mem=0.000 GB
+vmem=0.000 GB
+-----------------------
+Resource units charged (estimate):
+0.006 RUs
+-----------------------

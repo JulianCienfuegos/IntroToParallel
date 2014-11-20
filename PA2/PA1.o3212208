@@ -1,0 +1,45 @@
+ 
+--------------------------------------------------------------
+Compiling Programming Assignment 2 Serial Version
+--------------------------------------------------------------
+ 
+ 
+GCC: Serial
+ 
+Iter = 0 Resid Norm = 905946.143408
+Iter = 10 Resid Norm = 96894.410256
+Iter = 20 Resid Norm = 10380.708983
+Iter = 30 Resid Norm = 1112.668792
+Iter = 40 Resid Norm = 119.293944
+Iter = 50 Resid Norm = 12.792188
+Iter = 60 Resid Norm = 1.371906
+Iter = 70 Resid Norm = 0.147145
+Iter = 80 Resid Norm = 0.015783
+Iter = 90 Resid Norm = 0.001693
+Iter = 100 Resid Norm = 0.000182
+Iter = 110 Resid Norm = 0.000019
+Iter = 120 Resid Norm = 0.000002
+Solution converged in 124 iterations
+Final residual norm = 0.000001
+Solution at center and four corners of interior N/2 by N/2 grid : 
+xnew[256][256]=512.000000
+xnew[256][769]=1025.000000
+xnew[512][512]=1024.000000
+xnew[769][256]=1025.000000
+xnew[769][769]=1538.000000
+Sequential Jacobi: Matrix Size = 1024; 1.4 GFLOPS; Time = 1.213 sec; 
+
+-----------------------
+Resources requested:
+mem=48gb
+nodes=1:ppn=12
+-----------------------
+Resources used:
+cput=00:00:01
+walltime=00:00:07
+mem=0.000 GB
+vmem=0.000 GB
+-----------------------
+Resource units charged (estimate):
+0.002 RUs
+-----------------------

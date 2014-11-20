@@ -1,0 +1,383 @@
+PROGRAMNMING ASSIGNMENT 1 
+Melvyn Drag
+20 October 2014
+
+*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+
+For this assignment I used the templates provided by the professor. 
+To the templates I have added a #define blocksize and a printf() to 
+define and print out the blocksize I used for tiling.
+
+I used the template for the .bat file as well, and just cut it into three
+parts so that I could run the codes separately.
+
+*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+
+PROBLEM 1
+________________________________________________________________________
+void pa1p1(int n, double a[][n], double p[n], double q[n], double r[n])
+{
+/*This is the unoptimized version of the loop. */  
+int i, j;
+  for(i=0;i<n;i++)
+    for(j=0;j<n;j++)
+    {
+      q[i] = q[i] + a[i][j]*p[j];
+      r[i] = r[i] + a[j][i]*p[j];
+    }
+}
+
+void pa1p1opt(int n, double a[][n], double p[n], double q[n], double r[n])
+{ 
+	/*
+	 * For this function I use 4 way outer loop unrolling to get more 
+	 * rows into the cache at a time. In order to unroll a for both q 
+	 * and r I changed the access pattern for the r sum. 
+	 * I also use  tiling to get better data locality.  
+	 * I experimented with different tile sizes until I found the best
+	 * one.
+	 */
+	int i,j, it, jt;
+	for(it = 0; it < n; it+=blocksize)
+		for(jt = 0; jt < n; jt += blocksize)	
+			for(i=it;i<it+blocksize;i+=4)
+				for(j=jt;j<jt+blocksize;j++)
+				{
+				  q[i] += a[i][j]*p[j];
+				  q[i+1] += a[i+1][j]*p[j];		  
+				  q[i+2] += a[i+2][j]*p[j];
+				  q[i+3] += a[i+3][j]*p[j];
+				  
+				  r[j] += a[i][j]*p[i];
+  				  r[j] += a[i+1][j]*p[i+1]; 
+				  r[j] += a[i+2][j]*p[i+2]; 
+				  r[j] += a[i+3][j]*p[i+3]; 
+				}
+}
+
+-------------------------------------------------------------
+Compiling Programming Assignment 1, Problem 1
+--------------------------------------------------------------
+ 
+ipo: remark #11001: performing single-file optimizations
+ipo: remark #11006: generating object file /tmp/pbstmp.3145880/ipo_icc7onlGv.o
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64/libpthread.a(libpthread.o): In function `sem_open':
+(.text+0x774d): warning: the use of `mktemp' is dangerous, better use `mkstemp'
+ 
+ICC: Run 1
+ 
+blocksize = 8
+Problem 1 Reference Version: Matrix Size = 4096; 0.3 GFLOPS; Time = 2.577 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 3.3 GFLOPS; Time = 0.206 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+GCC: Run 1
+ 
+blocksize = 8
+Problem 1 Reference Version: Matrix Size = 4096; 0.2 GFLOPS; Time = 2.842 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 1.5 GFLOPS; Time = 0.438 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+ICC: Run 2
+ 
+blocksize = 8
+Problem 1 Reference Version: Matrix Size = 4096; 0.3 GFLOPS; Time = 2.576 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 3.3 GFLOPS; Time = 0.204 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+GCC: Run 2
+ 
+blocksize = 8
+Problem 1 Reference Version: Matrix Size = 4096; 0.2 GFLOPS; Time = 2.817 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 1.5 GFLOPS; Time = 0.435 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+ICC: Run 3
+ 
+blocksize = 8
+Problem 1 Reference Version: Matrix Size = 4096; 0.3 GFLOPS; Time = 2.576 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 3.3 GFLOPS; Time = 0.204 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+GCC: Run 3
+ 
+blocksize = 8
+Problem 1 Reference Version: Matrix Size = 4096; 0.2 GFLOPS; Time = 2.780 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 1.5 GFLOPS; Time = 0.434 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+
+
+
+
+PROBLEM 2
+________________________________________________________________________
+void pa1p2(int n, double a[][n], double b[][n])
+{ int i,j;
+  for(i=0;i<n;i++)
+   for(j=0;j<n;j++)
+    b[i][j] = 0.5*(a[i][j] + a[j][i]);
+}
+
+void pa1p2opt(int n, double a[][n], double b[][n], int is_sym)
+{ 
+	/*
+	 * For this function I use an extra parameter called is_sym. Since 
+	 * the second call to this function reads from a symmetric array, 
+	 * we dont need to access a_ij and a_ji as if they were different 
+	 * quantities.
+	 * 
+	 * In the case that the read array is not symmetric I use four way 
+	 * outer loop  unrolling to get more rows of a and b in the cache.
+	 * I also used tiling to get better data locality. 
+	 * 
+	 * For the case that the read array is symmetric we dont need tiling
+	 * because we are just copying an array.
+	 * I got very close to 1 GFLOP with icc with blocksize 128!
+	 * With blocksize 32, I get about .45 GFLOPS with both icc and gcc.
+	 */
+    int i,j, it, jt;
+	if(is_sym == 0)
+	{
+	for(it = 0; it < n; it += blocksize)
+		for(jt = 0; jt < n; jt += blocksize)
+			for(i=it;i<it+blocksize;i+=4)
+				for(j=jt;j<jt+blocksize;j++)
+				{
+					b[i][j] = 0.5*(a[i][j] + a[j][i]);
+					b[i+1][j] = 0.5*(a[i+1][j] + a[j][i+1]);
+					b[i+2][j] = 0.5*(a[i+2][j] + a[j][i+2]);
+					b[i+3][j] = 0.5*(a[i+3][j] + a[j][i+3]);
+				}
+	}
+	else
+	{
+	for(i=0;i<n;i++)
+		for(j=0;j<n;j+=4)
+		{	
+			b[i][j] = a[i][j];
+			b[i][j+1] = a[i][j+1];
+			b[i][j+2] = a[i][j+2];
+			b[i][j+3] = a[i][j+3];
+		}
+	}
+}
+
+
+--------------------------------------------------------------
+Compiling Problem 2
+--------------------------------------------------------------
+ 
+ipo: remark #11001: performing single-file optimizations
+ipo: remark #11006: generating object file /tmp/pbstmp.3145989/ipo_icc92FvG8.o
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64/libpthread.a(libpthread.o): In function `sem_open':
+(.text+0x774d): warning: the use of `mktemp' is dangerous, better use `mkstemp'
+ 
+ICC: Run 1
+ 
+blocksize = 128
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.625 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.88 GFLOPS; Time = 0.228 sec; 
+No differences found between base and test versions
+2794838 Diffs found over threshold 0.000000; Max Diff = 0.500000
+ 
+GCC: Run 1
+ 
+blocksize = 128
+Problem 1 Reference Version: Matrix Size = 4096; 0.13 GFLOPS; Time = 1.604 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.37 GFLOPS; Time = 0.550 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+ICC: Run 2
+ 
+blocksize = 128
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.631 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.88 GFLOPS; Time = 0.228 sec; 
+No differences found between base and test versions
+2794838 Diffs found over threshold 0.000000; Max Diff = 0.500000
+ 
+GCC: Run 2
+ 
+blocksize = 128
+Problem 1 Reference Version: Matrix Size = 4096; 0.13 GFLOPS; Time = 1.601 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.37 GFLOPS; Time = 0.550 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+ICC: Run 3
+ 
+blocksize = 128
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.630 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.88 GFLOPS; Time = 0.228 sec; 
+No differences found between base and test versions
+2794838 Diffs found over threshold 0.000000; Max Diff = 0.500000
+ 
+GCC: Run 3
+ 
+blocksize = 128
+Problem 1 Reference Version: Matrix Size = 4096; 0.13 GFLOPS; Time = 1.604 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.37 GFLOPS; Time = 0.550 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+
+ 
+--------------------------------------------------------------
+Compiling Problem 2 (with blocksize 32)
+--------------------------------------------------------------
+ 
+ipo: remark #11001: performing single-file optimizations
+ipo: remark #11006: generating object file /tmp/pbstmp.3141896/ipo_iccXktCDk.o
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64/libpthread.a(libpthread.o): In function `sem_open':
+(.text+0x774d): warning: the use of `mktemp' is dangerous, better use `mkstemp'
+ 
+ICC: Run 1
+
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.634 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.47 GFLOPS; Time = 0.430 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+GCC: Run 1
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.615 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.45 GFLOPS; Time = 0.452 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+ICC: Run 2
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.635 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.47 GFLOPS; Time = 0.429 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+GCC: Run 2
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.613 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.45 GFLOPS; Time = 0.452 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+ICC: Run 3
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.634 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.47 GFLOPS; Time = 0.430 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+ 
+GCC: Run 3
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.12 GFLOPS; Time = 1.613 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.44 GFLOPS; Time = 0.453 sec; 
+No differences found between base and test versions
+No differences found between base and test versions
+
+
+
+
+
+PROBLEM 3
+________________________________________________________________________
+void pa1p3(int n, double a[][n][n], double b[][n][n], double c[][n])
+{ int i,j,k,l;
+  for(i=0;i<n;i++)
+   for(j=0;j<n;j++)
+    for(k=0;k<n;k++)
+     for(l=0;l<n;l++)
+        C[l][k] += A[l][i][j]*B[k][j][i];
+
+}
+
+void pa1p3opt(int n, double a[][n][n], double b[][n][n], double c[][n])
+{
+/* I used tiling to make this function run faster.
+ * Also, I brought the it and jt loops to the inside 
+ * to access the elements of A and B more efficiently. 
+ * Then, I put the kt loop after the lt loop to get better 
+ * data locality for the C  and A arrays, since A and B cannot 
+ * both be accessed efficiently with respect to k and l.
+*/
+int i,j,k,l,it, jt, kt, lt;
+for(k = 0; k < n; k += blocksize)
+	for(l = 0; l < n; l += blocksize)
+		for(i = 0; i < n; i += blocksize)
+			for(j = 0; j < n; j += blocksize)	
+				for(lt=l;lt <  l + blocksize;lt++)
+					for(kt=k;kt<k + blocksize;kt++)
+						for(it=i;it< i + blocksize;it++)
+							for(jt=j;jt<j + blocksize;jt++)
+								C[lt][kt] += A[lt][it][jt]*B[kt][jt][it];
+	
+}
+
+
+--------------------------------------------------------------
+Compiling Problem 3
+--------------------------------------------------------------
+ 
+ipo: remark #11001: performing single-file optimizations
+ipo: remark #11006: generating object file /tmp/pbstmp.3145864/ipo_iccxHwOQS.o
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64/libpthread.a(libpthread.o): In function `sem_open':
+(.text+0x774d): warning: the use of `mktemp' is dangerous, better use `mkstemp'
+ 
+ICC: Run 1
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 1.11 GFLOPS; Time = 0.485 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.49 GFLOPS; Time = 0.215 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 1
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 0.27 GFLOPS; Time = 1.999 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.20 GFLOPS; Time = 0.447 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 2
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 1.15 GFLOPS; Time = 0.466 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.49 GFLOPS; Time = 0.215 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 2
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 0.27 GFLOPS; Time = 2.018 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.20 GFLOPS; Time = 0.448 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 3
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 1.11 GFLOPS; Time = 0.482 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.49 GFLOPS; Time = 0.215 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 3
+ 
+blocksize = 32
+Problem 3 Reference Version: Tensor Size = 128; 0.26 GFLOPS; Time = 2.100 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.20 GFLOPS; Time = 0.447 sec; 
+No differences found between base and test versions
+
+
+
+
+
+
+
+
+
+
+
+
+
+

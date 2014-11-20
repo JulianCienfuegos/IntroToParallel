@@ -1,0 +1,60 @@
+ 
+--------------------------------------------------------------
+Compiling Problem 3
+--------------------------------------------------------------
+ 
+ipo: remark #11001: performing single-file optimizations
+ipo: remark #11006: generating object file /tmp/pbstmp.3141948/ipo_iccgSyiq2.o
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64/libpthread.a(libpthread.o): In function `sem_open':
+(.text+0x774d): warning: the use of `mktemp' is dangerous, better use `mkstemp'
+ 
+ICC: Run 1
+ 
+Problem 3 Reference Version: Tensor Size = 128; 1.13 GFLOPS; Time = 0.474 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.18 GFLOPS; Time = 0.246 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 1
+ 
+Problem 3 Reference Version: Tensor Size = 128; 0.26 GFLOPS; Time = 2.066 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.12 GFLOPS; Time = 0.478 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 2
+ 
+Problem 3 Reference Version: Tensor Size = 128; 1.10 GFLOPS; Time = 0.486 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.18 GFLOPS; Time = 0.246 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 2
+ 
+Problem 3 Reference Version: Tensor Size = 128; 0.26 GFLOPS; Time = 2.028 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.12 GFLOPS; Time = 0.478 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 3
+ 
+Problem 3 Reference Version: Tensor Size = 128; 1.12 GFLOPS; Time = 0.478 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.18 GFLOPS; Time = 0.246 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 3
+ 
+Problem 3 Reference Version: Tensor Size = 128; 0.26 GFLOPS; Time = 2.072 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.12 GFLOPS; Time = 0.478 sec; 
+No differences found between base and test versions
+
+-----------------------
+Resources requested:
+mem=48gb
+nodes=1:ppn=12
+-----------------------
+Resources used:
+cput=00:00:10
+walltime=00:00:11
+mem=0.000 GB
+vmem=0.000 GB
+-----------------------
+Resource units charged (estimate):
+0.003 RUs
+-----------------------

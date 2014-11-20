@@ -1,0 +1,34 @@
+[osu1697@oakley02 PA1]$ qsub RunPA1.bat
+3139914.oak-batch.osc.edu
+[osu1697@oakley02 PA1]$ qstat -u osu1697
+
+oak-batch.osc.edu:15001: 
+                                                                         Req'd  Req'd   Elap
+Job ID               Username    Queue    Jobname          SessID NDS   TSK    Memory Time  S Time
+-------------------- ----------- -------- ---------------- ------ ----- ------ ------ ----- - -----
+3139914.oak-batc     osu1697     serial   PA1                 --      1     12   48gb 01:00 Q   -- 
+[osu1697@oakley02 PA1]$ qstat -u osu1697
+
+oak-batch.osc.edu:15001: 
+                                                                         Req'd  Req'd   Elap
+Job ID               Username    Queue    Jobname          SessID NDS   TSK    Memory Time  S Time
+-------------------- ----------- -------- ---------------- ------ ----- ------ ------ ----- - -----
+3139914.oak-batc     osu1697     serial   PA1                5305     1     12   48gb 01:00 R   -- 
+[osu1697@oakley02 PA1]$ qstat -u osu1697
+
+oak-batch.osc.edu:15001: 
+                                                                         Req'd  Req'd   Elap
+Job ID               Username    Queue    Jobname          SessID NDS   TSK    Memory Time  S Time
+-------------------- ----------- -------- ---------------- ------ ----- ------ ------ ----- - -----
+3139914.oak-batc     osu1697     serial   PA1                5305     1     12   48gb 01:00 R   -- 
+[osu1697@oakley02 PA1]$ qstat -u osu1697
+
+oak-batch.osc.edu:15001: 
+                                                                         Req'd  Req'd   Elap
+Job ID               Username    Queue    Jobname          SessID NDS   TSK    Memory Time  S Time
+-------------------- ----------- -------- ---------------- ------ ----- ------ ------ ----- - -----
+3139914.oak-batc     osu1697     serial   PA1                5305     1     12   48gb 01:00 R   -- 
+[osu1697@oakley02 PA1]$ qstat -u osu1697
+[osu1697@oakley02 PA1]$ls -l PA1.o3139914
+-rw------- 1 osu1697 PAS0880 5864 Oct 18 07:42 PA1.o3139914
+

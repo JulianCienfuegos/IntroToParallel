@@ -1,0 +1,155 @@
+tset: standard error: Inappropriate ioctl for device
+
+Enter UNIX terminal type, \c
+tset: standard error: Inappropriate ioctl for device
+
+ 
+--------------------------------------------------------------
+Compiling Programming Assignment 1, Problem 1
+--------------------------------------------------------------
+ 
+ipo: remark #11001: performing single-file optimizations
+ipo: remark #11006: generating object file /tmp/pbstmp.3139914/ipo_icc65GjSH.o
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64/libpthread.a(libpthread.o): In function `sem_open':
+(.text+0x774d): warning: the use of `mktemp' is dangerous, better use `mkstemp'
+ 
+ICC: Run 1
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.3 GFLOPS; Time = 1.974 sec; 
+Problem 1 Optimized version: 4096; 1.8 GFLOPS; Time = 0.374 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 1
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.3 GFLOPS; Time = 2.150 sec; 
+Problem 1 Optimized version: 4096; 1.6 GFLOPS; Time = 0.417 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 2
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.3 GFLOPS; Time = 1.969 sec; 
+Problem 1 Optimized version: 4096; 1.8 GFLOPS; Time = 0.374 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 2
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.3 GFLOPS; Time = 2.232 sec; 
+Problem 1 Optimized version: 4096; 1.6 GFLOPS; Time = 0.418 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 3
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.3 GFLOPS; Time = 1.974 sec; 
+Problem 1 Optimized version: 4096; 1.8 GFLOPS; Time = 0.374 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 3
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.3 GFLOPS; Time = 2.151 sec; 
+Problem 1 Optimized version: 4096; 1.6 GFLOPS; Time = 0.418 sec; 
+No differences found between base and test versions
+ 
+--------------------------------------------------------------
+Compiling Problem 2
+--------------------------------------------------------------
+ 
+ipo: remark #11001: performing single-file optimizations
+ipo: remark #11006: generating object file /tmp/pbstmp.3139914/ipo_iccjbqotd.o
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64/libpthread.a(libpthread.o): In function `sem_open':
+(.text+0x774d): warning: the use of `mktemp' is dangerous, better use `mkstemp'
+ 
+ICC: Run 1
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.13 GFLOPS; Time = 1.565 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.32 GFLOPS; Time = 0.620 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 1
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.17 GFLOPS; Time = 1.216 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.31 GFLOPS; Time = 0.650 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 2
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.13 GFLOPS; Time = 1.562 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.32 GFLOPS; Time = 0.620 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 2
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.17 GFLOPS; Time = 1.219 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.31 GFLOPS; Time = 0.658 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 3
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.13 GFLOPS; Time = 1.566 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.32 GFLOPS; Time = 0.620 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 3
+ 
+Problem 1 Reference Version: Matrix Size = 4096; 0.17 GFLOPS; Time = 1.215 sec; 
+Problem 1 Optimized Version: Matrix Size = 4096; 0.31 GFLOPS; Time = 0.657 sec; 
+No differences found between base and test versions
+ 
+--------------------------------------------------------------
+Compiling Problem 3
+--------------------------------------------------------------
+ 
+ipo: remark #11001: performing single-file optimizations
+ipo: remark #11006: generating object file /tmp/pbstmp.3139914/ipo_iccfsLLQt.o
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../lib64/libpthread.a(libpthread.o): In function `sem_open':
+(.text+0x774d): warning: the use of `mktemp' is dangerous, better use `mkstemp'
+ 
+ICC: Run 1
+ 
+Problem 3 Reference Version: Tensor Size = 128; 1.04 GFLOPS; Time = 0.517 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.05 GFLOPS; Time = 0.262 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 1
+ 
+Problem 3 Reference Version: Tensor Size = 128; 0.23 GFLOPS; Time = 2.327 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.02 GFLOPS; Time = 0.526 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 2
+ 
+Problem 3 Reference Version: Tensor Size = 128; 1.00 GFLOPS; Time = 0.539 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.06 GFLOPS; Time = 0.261 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 2
+ 
+Problem 3 Reference Version: Tensor Size = 128; 0.24 GFLOPS; Time = 2.203 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.05 GFLOPS; Time = 0.511 sec; 
+No differences found between base and test versions
+ 
+ICC: Run 3
+ 
+Problem 3 Reference Version: Tensor Size = 128; 1.03 GFLOPS; Time = 0.521 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 2.06 GFLOPS; Time = 0.260 sec; 
+No differences found between base and test versions
+ 
+GCC: Run 3
+ 
+Problem 3 Reference Version: Tensor Size = 128; 0.26 GFLOPS; Time = 2.105 sec; 
+Problem 3 Optimized Version: Tensor Size = 128; 1.05 GFLOPS; Time = 0.513 sec; 
+No differences found between base and test versions
+
+-----------------------
+Resources requested:
+mem=48gb
+nodes=1:ppn=12
+-----------------------
+Resources used:
+cput=00:00:40
+walltime=00:00:41
+mem=0.034 GB
+vmem=0.149 GB
+-----------------------
+Resource units charged (estimate):
+0.013 RUs
+-----------------------
