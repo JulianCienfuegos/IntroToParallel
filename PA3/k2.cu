@@ -3,6 +3,7 @@ mmkernel( float* a, float* b, float* c,
   int pitch_a, int pitch_b, int pitch_c,
   int n, int m, int p )
 {
+	// This is a shared memory version of k1.
     int tx = threadIdx.x;
     int i = blockIdx.x*32 + tx;
     int j = blockIdx.y;

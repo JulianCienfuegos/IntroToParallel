@@ -7,7 +7,7 @@ mmkernel( float* a, float* b, float* c,
     int j = blockIdx.y;
 
     float sum = 0.0;
-    for( int k = 0; k < p; ++k )
-      sum += b[i+pitch_b*k] * c[k+pitch_c*j];
-    a[i+pitch_a*j] = sum;
+    for( int k = 0; k < p; ++k ) // p iterations
+      sum += b[i+pitch_b*k] * c[k+pitch_c*j]; // 2 flops. 2p mem accesses per thread.
+    a[i+pitch_a*j] = sum; //1 more global memory access
 }
