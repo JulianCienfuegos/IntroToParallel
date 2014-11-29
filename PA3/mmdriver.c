@@ -26,7 +26,7 @@ mmgold( float* a, int an, float* b, int bn, float* c, int cn, int n1, int n2, in
     for( j = 0; j < n2; ++j )
 	for( k = 0; k < n3; ++k )
 	    for( i = 0; i < n1; ++i )
-		a[i+j*an] += b[i+k*bn]*c[k+j*cn];
+		a[j+i*an] += b[i+k*bn]*c[j+k*cn];
 }
 
 void
