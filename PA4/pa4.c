@@ -48,6 +48,7 @@ int 	taskid,
 		numworkers,
 		numtasks,
 		averow, rows, master_rows, offset, extra,
+		recv_row,
 		dest, source, 
 		left, right, 
 		msgtype,
@@ -81,6 +82,7 @@ if (taskid == MASTER)
 	 * Information about the distribution of work. 
 	 * The MASTER has to do a little bit of extra work
 	 */
+	 printf("numtasks is %u\n", numtasks);
 	averow = (N+2)/numtasks; 
 	extra = (N+2)%numtasks;
 	offset = 0;
@@ -115,7 +117,7 @@ if (taskid == MASTER)
 	{
 		/* Perform a calculation*/
 		int start = 1;
-		update(xold, xnew, resid, b, start, master_rows);
+		update(xold, xnew, resid, b, start, master_rows-1); // the minus one may alleviate the issue
 		
 		/*Gather results*/
 		for(k = 1; k <= numworkers; k++)
@@ -145,13 +147,7 @@ if (taskid == MASTER)
 			break;
 		} 
 		
-		/* Send/Recv with neighbor */
-		if(numworkers > 0)
-		{
-			MPI_Send(&xnew[(master_rows-1)*(N+2)], N+2, MPI_DOUBLE, right, BEGIN, MPI_COMM_WORLD);
-			MPI_Recv(&xnew[(master_rows+1)*(N+2)], N+2, MPI_DOUBLE, right, BEGIN, MPI_COMM_WORLD, &status);
-		}		
-		/*Copy*/
+
 		copy(xold, xnew, start, master_rows);
 	}
 	
@@ -162,26 +158,45 @@ if (taskid == MASTER)
 
 if (taskid != MASTER)
 {
-/*
+
 	MPI_Barrier(MPI_COMM_WORLD);
 	MPI_Recv(&offset, 1, MPI_INT, MASTER, BEGIN, MPI_COMM_WORLD, &status);
-	MPI_Recv(&rows, 1, MPI_INT, MSTER, BEGIN, MPI_COMM_WORLD, &status);
+	MPI_Recv(&rows, 1, MPI_INT, MASTER, BEGIN, MPI_COMM_WORLD, &status);
 	MPI_Recv(&left, 1, MPI_INT, MASTER, BEGIN, MPI_COMM_WORLD, &status);
 	MPI_Recv(&right, 1, MPI_INT, MASTER, BEGIN, MPI_COMM_WORLD, &status);
 	for(iter=0;iter<maxiter;iter++)
 	{
 		// Perform a calculation
-		update(xold,xnew,resid,b);
+		if (taskid!=numtasks)
+			update(xold,xnew,resid, b, offset, rows );
+		else
+			update(xold, xnew, resid, b, offset, rows-1);
+		
 		//Send Results
+		msgtype = DONE;
+		MPI_Send(&offset, 1, MPI_INT, MASTER, msgtype, MPI_COMM_WORLD);
+		MPI_Send(&rows, 1, MPI_INT, MASTER, msgtype, MPI_COMM_WORLD);
+		MPI_Send(&resid[offset*N], rows*(N+2), MPI_DOUBLE, MASTER, msgtype, MPI_COMM_WORLD);
 		
 		//Send/recv with neighbor
-		
+		if(right != NONE)
+		{
+			MPI_Recv(&xnew[(offset-1)*(N+2)], N+2, MPI_DOUBLE, left, BEGIN, MPI_COMM_WORLD, &status);
+			MPI_Send(&xnew[(offset+rows-1)*(N+2)], N+2, MPI_DOUBLE, right, BEGIN, MPI_COMM_WORLD); //right
+			MPI_Recv(&xnew[((offset+rows))*(N+2)], N+2, MPI_DOUBLE, right, BEGIN, MPI_COMM_WORLD, &status); //rt
+			MPI_Send(&xnew[(offset)*(N+2)], N+2, MPI_DOUBLE, left, BEGIN, MPI_COMM_WORLD); //lt
+		}
+		if(right == NONE)
+		{
+			MPI_Recv(&xnew[(offset-1)*(N+2)], N+2, MPI_DOUBLE, left, BEGIN, MPI_COMM_WORLD, &status);
+			MPI_Send(&xnew[(offset)*(N+2)], N+2, MPI_DOUBLE, left, BEGIN, MPI_COMM_WORLD); //lt
+		}
 		//Copy		
-		copy(xold,xnew);
+		copy(xold,xnew, offset*(N+2), rows);
 	}
 	
 	MPI_Finalize();
-*/
+
 	
 }
 
