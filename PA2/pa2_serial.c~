@@ -3,7 +3,7 @@
 #include <sys/time.h>
 #include <stdlib.h>
 
-#define N 256
+#define N 2566
 #define diag 5.0
 #define recipdiag 0.2
 #define odiag -1.0
