@@ -1,0 +1,460 @@
+\documentclass[11pt]{article}
+
+\usepackage[left=0.25in, right=0.25in, top=1in, bottom=1in, landscape]{geometry}
+\usepackage{url}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{listings}
+
+\lhead{Intro to Parallel Comp PA3}
+\chead{Melvyn Ian Drag}
+\rhead{\today}
+\setlength{\parskip}{0pt} 
+\setlength{\parindent}{0pt}
+
+\begin{document}
+\begin{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PROBLEM 1
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Problem1 
+\begin{center}
+\textbf{Code}
+\begin{lstlisting}
+\end{lstlisting}
+\textbf{\_\_ Results \_\_}
+\begin{lstlisting}
+\end{lstlisting}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PROBLEM 2
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Problem2
+
+\section{MPI\_Send and MPI\_Recv\\}
+I had to manually change the message size for each message size and compile each one. This took forever!
+\begin{center}
+\textbf{ping\_pong.c}
+\begin{lstlisting}
+#include "mpi.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+
+#define MSGSIZE 1048576
+#define SERVER 0 // This is the processor that serves the ball                                                                                                                                                 
+#define PLAYER2 1
+#define NITER 10
+#define BEGIN 1
+#define COUNT 1
+
+double clkbegin, clkend;
+double rtclock();
+
+int main(int argc, char * argv[])
+{
+int taskid,
+        numworkers,
+        numtasks,
+        i; // Loop Variable                                                                                                                                                                                    
+
+double bandwidth,
+  time,
+  time2;
+
+
+double msg1[MSGSIZE]={0};
+double msg2[MSGSIZE]={0}; // Messages to pass.                                                                                                                                                                 
+
+MPI_Status status;
+
+MPI_Init(&argc, &argv);
+MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
+MPI_Comm_rank(MPI_COMM_WORLD, &taskid);
+numworkers = numtasks-1;
+if(taskid == SERVER)
+{
+        /************************* Master Code ********************************/
+        printf("**************A FRIENDLY GAME OF PING PONG**************\n");
+        printf("The message size is %u\n", MSGSIZE);
+        MPI_Barrier(MPI_COMM_WORLD);
+        clkbegin = rtclock();
+        for(i = 0; i < NITER; i++)
+        {
+                MPI_Send(&msg1, MSGSIZE, MPI_DOUBLE, PLAYER2, BEGIN, MPI_COMM_WORLD);
+                MPI_Recv(&msg2, MSGSIZE, MPI_DOUBLE, PLAYER2, BEGIN, MPI_COMM_WORLD, &status);
+                MPI_Send(&msg2, MSGSIZE, MPI_DOUBLE, PLAYER2, BEGIN, MPI_COMM_WORLD);
+                MPI_Recv(&msg1, MSGSIZE, MPI_DOUBLE, PLAYER2, BEGIN, MPI_COMM_WORLD, &status);
+        }
+        clkend = rtclock();
+        time = (clkend - clkbegin)/(4*NITER);
+        bandwidth = 8*MSGSIZE/time;
+        printf("I am the SERVER because my taskid is %u\n", taskid);
+        printf("The total time is %f seconds\n", time);
+              printf("Bandwidth is %f\n", bandwidth);
+
+        MPI_Recv(&time2, 1, MPI_DOUBLE, PLAYER2, BEGIN, MPI_COMM_WORLD, &status);
+        bandwidth = 8*MSGSIZE/time2;
+        printf("\nThe total time for PLAYER2 is %f\n", time2);
+        printf("Bandwidth is %f\n", bandwidth);
+        printf("***********************GAME OVER************************\n");
+        MPI_Finalize();
+
+}
+if(taskid != SERVER)
+{
+        /************************* Worker Code ********************************/
+        MPI_Barrier(MPI_COMM_WORLD);
+        clkbegin = rtclock();
+        for(i = 0; i < NITER; i++)
+        {
+                MPI_Recv(&msg1, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &status);
+                MPI_Send(&msg1, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD);
+                MPI_Recv(&msg2, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &status);
+                MPI_Send(&msg2, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD);
+        }
+        clkend = rtclock();
+        time2 = (clkend - clkbegin)/(4*NITER);
+        MPI_Send(&time2, 1, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD);
+        MPI_Finalize();
+}
+}
+
+/************************* Timer Code *********************************/
+double rtclock()
+{
+  struct timezone Tzp;
+  struct timeval Tp;
+  int stat;
+  stat = gettimeofday (&Tp, &Tzp);
+  if (stat != 0) printf("Error return from gettimeofday: %d",stat);
+  return(Tp.tv_sec + Tp.tv_usec*1.0e-6);
+}
+\end{lstlisting}
+\textbf{run.bat}
+\begin{lstlisting}
+#PBS -N mpi_ping_pong
+#PBS -l walltime=0:30:00
+#PBS -l nodes=2:ppn=12
+#PBS -j oe
+export OMP_NUM_THREADS=12
+export MV2_ENABLE_AFFINITY=0
+
+module load mvapich2
+
+cd $PBS_O_WORKDIR
+pbsdcp *.out  $TMPDIR
+cd $TMPDIR
+
+mpiexec -pernode ping_pong1.out
+mpiexec -pernode ping_pong8.out
+mpiexec -pernode ping_pong64.out
+mpiexec -pernode ping_pong512.out
+mpiexec -pernode ping_pong4096.out
+mpiexec -pernode ping_pong32768.out
+mpiexec -pernode ping_pong256K.out
+mpiexec -pernode ping_pong1M.out
+
+\end{lstlisting}
+\textbf{\_\_ Results \_\_}
+\begin{lstlisting}
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 1
+I am the SERVER because my taskid is 0
+The total time is 0.000003 seconds
+Bandwidth is 2689734.028056
+
+The total time for PLAYER2 is 0.000003
+Bandwidth is 2831597.637131
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 8
+I am the SERVER because my taskid is 0
+The total time is 0.000003 seconds
+Bandwidth is 22276801.327801
+
+The total time for PLAYER2 is 0.000003
+Bandwidth is 23241165.021645
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 64
+I am the SERVER because my taskid is 0
+The total time is 0.000005 seconds
+Bandwidth is 110127366.564103
+
+The total time for PLAYER2 is 0.000005
+Bandwidth is 112581056.251638
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 512
+I am the SERVER because my taskid is 0
+The total time is 0.000008 seconds
+Bandwidth is 507154809.859779
+
+The total time for PLAYER2 is 0.000008
+Bandwidth is 517076574.386757
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 4096
+I am the SERVER because my taskid is 0
+The total time is 0.000028 seconds
+Bandwidth is 1159822392.168776
+
+The total time for PLAYER2 is 0.000028
+Bandwidth is 1161047125.423442
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 32768
+I am the SERVER because my taskid is 0
+The total time is 0.000096 seconds
+Bandwidth is 2716520389.810995
+
+The total time for PLAYER2 is 0.000096
+Bandwidth is 2716520389.810995
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 262144
+I am the SERVER because my taskid is 0
+The total time is 0.000734 seconds
+Bandwidth is 2856778695.271393
+
+The total time for PLAYER2 is 0.000734
+Bandwidth is 2857080268.362621
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 1048576
+I am the SERVER because my taskid is 0
+The total time is 0.002836 seconds
+Bandwidth is 2957670311.919116
+
+The total time for PLAYER2 is 0.002836
+Bandwidth is 2957670311.919116
+***********************GAME OVER************************
+
+-----------------------
+Resources requested:
+nodes=2:ppn=12
+-----------------------
+\end{lstlisting}
+\end{center}
+\section{MPI\_Isend and MPI\_Irecv}
+\begin{center}
+\textbf{ping\_pong.c}
+\begin{lstlisting}
+#include "mpi.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+
+#define MSGSIZE 1
+#define SERVER 0 // This is the processor that serves the ball                                                                                                                                                \
+																																														   
+#define PLAYER2 1
+#define NITER 10
+#define BEGIN 1
+#define COUNT 1
+
+double clkbegin, clkend;
+double rtclock();
+
+int main(int argc, char * argv[])
+{
+int taskid,
+numworkers,
+numtasks,
+i; // Loop Variable                                                                                                                                                                                        
+
+double bandwidth,
+time,
+time2;
+
+
+double msg1[MSGSIZE]={0};
+double msg2[MSGSIZE]={0}; // Messages to pass.                                                                                                                                                              \
+																																														   
+
+MPI_Status status;
+MPI_Request request;
+MPI_Init(&argc, &argv);
+MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
+MPI_Comm_rank(MPI_COMM_WORLD, &taskid);
+numworkers = numtasks-1;
+if(taskid == SERVER)
+{
+	/************************* Master Code ********************************/
+	printf("**************A FRIENDLY GAME OF PING PONG**************\n");
+	printf("The message size is %u\n", MSGSIZE);
+	MPI_Barrier(MPI_COMM_WORLD);
+	clkbegin = rtclock();
+	for(i = 0; i < NITER; i++)
+	{
+	MPI_Isend(&msg1, MSGSIZE, MPI_DOUBLE, PLAYER2, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	MPI_Irecv(&msg2, MSGSIZE, MPI_DOUBLE, PLAYER2, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	MPI_Isend(&msg2, MSGSIZE, MPI_DOUBLE, PLAYER2, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	MPI_Irecv(&msg1, MSGSIZE, MPI_DOUBLE, PLAYER2, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	}
+	clkend = rtclock();
+	time = (clkend - clkbegin)/(4*NITER);
+	bandwidth = 8*MSGSIZE/time;
+	printf("I am the SERVER because my taskid is %u\n", taskid);
+	
+																																					  
+	printf("The total time is %f seconds\n", time);
+	printf("Bandwidth is %f\n", bandwidth);
+	
+	MPI_Irecv(&time2, 1, MPI_DOUBLE, PLAYER2, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	bandwidth = 8*MSGSIZE/time2;
+	printf("\nThe total time for PLAYER2 is %f\n", time2);
+	printf("Bandwidth is %f\n", bandwidth);
+	printf("***********************GAME OVER************************\n");
+	MPI_Finalize();
+} 
+if(taskid != SERVER) {
+	/************************* Worker Code ********************************/
+	MPI_Barrier(MPI_COMM_WORLD);
+	clkbegin = rtclock();
+	for(i = 0; i < NITER; i++)
+	{
+	MPI_Irecv(&msg1, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	MPI_Isend(&msg1, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	MPI_Irecv(&msg2, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	MPI_Isend(&msg2, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	}
+	clkend = rtclock();
+	time2 = (clkend - clkbegin)/(4*NITER);
+	MPI_Isend(&time2, 1, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &request);
+	
+	MPI_Finalize();
+	
+	} if(taskid != SERVER) {
+	/************************* Worker Code ********************************/
+	MPI_Barrier(MPI_COMM_WORLD);
+	clkbegin = rtclock();
+	for(i = 0; i < NITER; i++)
+	{
+	MPI_Irecv(&msg1, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	MPI_Isend(&msg1, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	MPI_Irecv(&msg2, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	MPI_Isend(&msg2, MSGSIZE, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Wait(&request, &status);
+	}
+	clkend = rtclock();
+	time2 = (clkend - clkbegin)/(4*NITER);
+	MPI_Isend(&time2, 1, MPI_DOUBLE, SERVER, BEGIN, MPI_COMM_WORLD, &request);
+	MPI_Finalize();
+}
+}
+/************************* Timer Code *********************************/
+double rtclock()
+{
+  struct timezone Tzp;
+  struct timeval Tp;
+  int stat;
+  stat = gettimeofday (&Tp, &Tzp);
+  if (stat != 0) printf("Error return from gettimeofday: %d",stat);
+  return(Tp.tv_sec + Tp.tv_usec*1.0e-6);
+}
+\end{lstlisting}
+\textbf{\_\_ Results \_\_}
+\begin{lstlisting}
+-bash-4.1$ more mpi_ping_pong.o3312839 
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 1
+I am the SERVER because my taskid is 0
+The total time is 0.000003 seconds
+Bandwidth is 2350573.169877
+
+The total time for PLAYER2 is 0.000003
+Bandwidth is 2422702.671480
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 8
+I am the SERVER because my taskid is 0
+The total time is 0.000003 seconds
+Bandwidth is 20491256.183206
+
+The total time for PLAYER2 is 0.000003
+Bandwidth is 20808950.077519
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 64
+I am the SERVER because my taskid is 0
+The total time is 0.000004 seconds
+Bandwidth is 115767312.560647
+
+The total time for PLAYER2 is 0.000004
+Bandwidth is 117670336.876712
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 512
+I am the SERVER because my taskid is 0
+The total time is 0.000007 seconds
+Bandwidth is 572662306.133333
+
+The total time for PLAYER2 is 0.000007
+Bandwidth is 582862398.100085
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 4096
+I am the SERVER because my taskid is 0
+The total time is 0.000027 seconds
+Bandwidth is 1214929975.443094
+
+The total time for PLAYER2 is 0.000027
+Bandwidth is 1216004896.898916
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 32768
+I am the SERVER because my taskid is 0
+The total time is 0.000123 seconds
+Bandwidth is 2137775973.899771
+
+The total time for PLAYER2 is 0.000123
+Bandwidth is 2137360407.787336
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 262144
+I am the SERVER because my taskid is 0
+The total time is 0.000666 seconds
+Bandwidth is 3148630550.703119
+
+The total time for PLAYER2 is 0.000666
+Bandwidth is 3148884163.459583
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 1048576
+I am the SERVER because my taskid is 0
+The total time is 0.002699 seconds
+Bandwidth is 3108043389.610549
+
+The total time for PLAYER2 is 0.002699
+Bandwidth is 3108098300.946492
+***********************GAME OVER************************
+
+-----------------------
+Resources requested:
+nodes=2:ppn=12
+-----------------------
+
+\end{lstlisting}
+\end{center}
+\end{enumerate}
+\end{document}

@@ -17,7 +17,7 @@ mmkernel( float* a, float* b, float* c,
                 sum3 += b_tmp0*c[k*pitch_c + i + 96];
                 
                 sum4 += b_tmp1*c[k*pitch_c+i];
-		sum5 += b_tmp1*c[k*pitch_c + i + 32];
+				sum5 += b_tmp1*c[k*pitch_c + i + 32];
                 sum6 += b_tmp1*c[k*pitch_c + i + 64];
                 sum7 += b_tmp1*c[k*pitch_c + i + 96];
         }

@@ -63,7 +63,7 @@ mmkernel( float* a, float* b, float* c,
 }
 \end{lstlisting}	
 
-There will be less global memory access due to the introduction of cb. A thread will still perform $2P$ FLOPs. However, a thread will make $\frac{P}{32}$ accesses to global memory when accessing c, $P$ accesses to global memory when accessing b, and one global memory access when accessing a. So the ration is $\frac{\frac{P}{32} + P + 1}{2P} \approx \frac12$.
+There will be less global memory access due to the introduction of cb. A thread will still perform $2P$ FLOPs. However, a thread will make $\frac{P}{32}$ accesses to global memory when accessing c, $P$ accesses to global memory when accessing b, and one global memory access when accessing a. So the ratio is $\frac{\frac{P}{32} + P + 1}{2P} \approx \frac12$.
 
 \item
 \begin{lstlisting}
@@ -92,7 +92,7 @@ mmkernel( float* a, float* b, float* c,
 }
 \end{lstlisting}
 
-Every thread will perform $4P$ FLOPs . There are 2 global memory accesses due to a, $\frac{P}{32}$ global memory accesses due to c, and $2P$ global memory accesses due to b. The ratio is $\frac{2P + \frac{P}{32} + 2}{4P} \approx \frac12$. We should expect better performance than k2, however, due to the loop unrolling.
+Every thread will perform $4P$ FLOPs . There are 2 global memory accesses due to a, $\frac{P}{32}$ global memory accesses due to c, and $2P$ global memory accesses due to b. The ratio is $\frac{2P + \frac{P}{32} + 2}{4P} \approx \frac12$. We should expect better performance here than with k2, however, due to the loop unrolling.
 
 \item
 \begin{lstlisting}
@@ -126,7 +126,7 @@ mmkernel( float* a, float* b, float* c,
 A thread running this version of the kernel will perform $4P$ FLOPs, $2\frac{P}{32}$ global memory accesses due to c, $P$ global memory accesses due to b, and 2 global memory accesses due to a. The ratio is $\frac{\frac{P}{16} + P + 2}{4P}\approx\frac14$. 
 \end{enumerate}
 
-We expect the runtime of the kernels to be decreasing. If we assume that the ratio of global memory access to FLOPs is the only expensive transaction occuring during the run of the kernel, then we will expect k1 to have a performance of $x$ GLOPS, and k2 and k3 to both produce $2x$ GLOPS, and then k4 to produce $4x$ GFLOPS. We do not see this performance improvement. Evidently, global memory access is not the only consideration to be made when optimizing kernel codes. Note that k4 does not even double to performance of k1.
+We expect the runtime of the kernels to be decreasing. If we assume that global memory access is the only expensive transaction occuring during the run of the kernel, then we will expect k1 to have a performance of $x$ GLOPS, and k2 and k3 to both produce $2x$ GLOPS, and then k4 to produce $4x$ GFLOPS. We do not see this performance trend. Evidently, global memory access is not the only consideration to be made when optimizing kernel codes. Note that k4 does not even double the performance of k1.
 
 \textbf{RESULTS}
 \begin{lstlisting}
@@ -170,7 +170,7 @@ matrix = 1024x1024
   msec =      52761   GFLOPS =   40.70,   47.17 (kernel)
 no errors found
 \end{lstlisting}
-\item The two way on i and j gives amazing performance.
+\item The two way unroll on i and j gives amazing performance.
 
 \begin{lstlisting}
 extern "C" __global__ void
@@ -279,8 +279,8 @@ mmkernel( float* a, float* b, float* c,
 
         a[j+pitch_a*i] = sum0;   
         a[j+1+pitch_a*i]=sum1;
-		a[j+2+pitch_a*i]=sum2;
-		a[j+3+pitch_a*i]=sum3;
+	a[j+2+pitch_a*i]=sum2;
+	a[j+3+pitch_a*i]=sum3;
 }
 \end{lstlisting}
 
@@ -339,7 +339,7 @@ matrix = 1024x1024
 no errors found
 \end{lstlisting}
 
-\textbf{Attempt 3} And here I tried to do a 4 way unroll on i, along with a transformation of the problem to $C^TB = A^T$, along with an index transformation such that A is stored, and not $A^T$ .
+\textbf{Attempt 3} And here I tried to do a 4 way unroll on i, along with a transformation of the problem to $C^TB = A^T$, along with an index transformation such that A is stored, and not $A^T$ . This allows us to coalese the writes to A in global memory.
 
 \begin{lstlisting}
 extern "C" __global__ void
@@ -461,7 +461,7 @@ no errors found
 \end{lstlisting}
 
 \textbf{Attempt 5}
-Here is a code with coalesced memory accesses to A(coming from the previously described matrix transformation), along with two way loop unrolling on i and j. This is my best attempt.
+Here is a code with coalesced memory accesses to A(coming from the previously described matrix transformation), along with four way loop unrolling on i and two way loop unrolling on j. This is my best attempt.
 
 \begin{lstlisting}
 extern "C" __global__ void
@@ -511,6 +511,21 @@ no errors found
 
 \end{lstlisting}
 
+\section*{Update}
+We just got a different driver on Carmen. Here I run my code using this driver. I called the executable td.
+
+\begin{lstlisting}
+$ ./td -bin k6.bin -block 8 512 -thread 32 1 -mat 1024 -size 1024 -check
+binfile=k6.bin  array=1024x1024  matrix=1024x1024  block=<8x512>  thread=<32x1>
+matrix = 1024x1024
+ array = 1024x1024
+  grid = 8x512
+ block = 32x1x1
+ flops = 2147483648
+  msec =      41167   GFLOPS =   52.17,   81.24 (kernel)
+no errors found
+
+\end{lstlisting}
 
 \end{enumerate}
 \end{document}

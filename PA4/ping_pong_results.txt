@@ -1,0 +1,80 @@
+-bash-4.1$ more mpi_ping_pong.o3312771 
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 1
+I am the SERVER because my taskid is 0
+The total time is 0.000003 seconds
+Bandwidth is 2689734.028056
+
+The total time for PLAYER2 is 0.000003
+Bandwidth is 2831597.637131
+
+
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 8
+I am the SERVER because my taskid is 0
+The total time is 0.000003 seconds
+Bandwidth is 22276801.327801
+
+The total time for PLAYER2 is 0.000003
+Bandwidth is 23241165.021645
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 64
+I am the SERVER because my taskid is 0
+The total time is 0.000005 seconds
+Bandwidth is 110127366.564103
+
+The total time for PLAYER2 is 0.000005
+Bandwidth is 112581056.251638
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 512
+I am the SERVER because my taskid is 0
+The total time is 0.000008 seconds
+Bandwidth is 507154809.859779
+
+The total time for PLAYER2 is 0.000008
+Bandwidth is 517076574.386757
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 4096
+I am the SERVER because my taskid is 0
+The total time is 0.000028 seconds
+Bandwidth is 1159822392.168776
+
+The total time for PLAYER2 is 0.000028
+Bandwidth is 1161047125.423442
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 32768
+I am the SERVER because my taskid is 0
+The total time is 0.000096 seconds
+Bandwidth is 2716520389.810995
+
+The total time for PLAYER2 is 0.000096
+Bandwidth is 2716520389.810995
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 262144
+I am the SERVER because my taskid is 0
+The total time is 0.000734 seconds
+Bandwidth is 2856778695.271393
+
+The total time for PLAYER2 is 0.000734
+Bandwidth is 2857080268.362621
+***********************GAME OVER************************
+**************A FRIENDLY GAME OF PING PONG**************
+The message size is 1048576
+I am the SERVER because my taskid is 0
+The total time is 0.002836 seconds
+Bandwidth is 2957670311.919116
+
+The total time for PLAYER2 is 0.002836
+Bandwidth is 2957670311.919116
+***********************GAME OVER************************
+
+-----------------------
+Resources requested:
+nodes=2:ppn=12
+-----------------------
